@@ -127,7 +127,7 @@ class LeafletMap extends React.Component {
             // url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
             //   attribution= 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
             attribution="&copy; <a href=&quot;https://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-            url="../assets/tiles/{z}/{x}/{y}.png"
+            url="tiles/{z}/{x}/{y}.png"
           />
           <MarkerClusterGroup
             showCoverageOnHover={true}
