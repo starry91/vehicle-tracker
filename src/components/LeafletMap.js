@@ -7,38 +7,6 @@ import localforage from 'localforage';
 import 'leaflet-offline';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
-//Static data for list of markers
-const markerList = [
-  {
-    lat: 34.5,
-    lng: -115.5,
-    name: "ABC Hospitals",
-    info: 10
-  },
-  {
-    lat: 34.56,
-    lng: -115.56,
-    name: "FEK Hospitals",
-    info: 10
-  },
-  {
-    lat: 33,
-    lng: -114.5,
-    name: "NRI Hospitals",
-    info: 10
-  },
-  // {
-  //   lat: 17.441597,
-  //   lng: 78.356214,
-  //   name: "sandya Hospitals"
-  // },
-  // {
-  //   lat: 17.441264,
-  //   lng: 78.360184,
-  //   name: "childrens Hospitals"
-  // }
-];
-
 //Defining the geo search control 
 const searchControl = new GeoSearchControl({ //geosearch object
   provider: new OpenStreetMapProvider(),
@@ -55,37 +23,13 @@ const searchControl = new GeoSearchControl({ //geosearch object
 
 //Defining the custom marker with an hospital building icon
 const customMarker = new L.icon({
-  iconUrl: require('../assets/hostpital-building.svg'),
-  iconSize: new L.Point(35, 46),
+  iconUrl: require('../assets/maps-and-flags.svg'),
+  iconSize: new L.Point(25, 30),
   // iconAnchor:   [22, 94],
 });
 
 //The Map definition
 class LeafletMap extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      lat: 33.5,
-      lng: -115,
-      zoom: 10,
-      maxZoom: 12
-    }
-  }
-
-  // componentDidMount() {
-  //   //Defining the offline layer for the map
-  //   const map = L.map('map-id');
-  //   const offlineLayer = L.tileLayer.offline('tiles/{z}/{x}/{y}.png', localforage, {
-  //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  //     subdomains: 'abc',
-  //     minZoom: 8,
-  //     maxZoom: 12,
-  //     crossOrigin: true
-  //   });
-  //   offlineLayer.addTo(map);//add the offline layer
-  //   map.zoomControl.remove();
-  //   map.addControl(searchControl);
-  // }
 
   //Defining the custom icon for clusters
   customIconCreateFunction(cluster) {
@@ -102,13 +46,13 @@ class LeafletMap extends React.Component {
       <Popup
         tipSize={5}
         anchor="bottom-right"
-        longitude={markerList[index].lng}
-        latitude={markerList[index].lat}
+        longitude={this.props.data[index].lng}
+        latitude={this.props.data[index].lat}
       >
         <p>
-          <strong>{markerList[index].name}</strong>
+          <strong>{this.props.data[index].name}</strong>
           <br />
-          Available beds:{markerList[index].info}
+          Available beds:{this.props.data[index].info}
         </p>
       </Popup>
     );
@@ -116,8 +60,8 @@ class LeafletMap extends React.Component {
 
   //render the map
   render() {
-    const position = [this.state.lat, this.state.lng];
-    console.log(position);
+    const position = [this.props.center.lat, this.props.center.lng];
+    console.log("Map center: ", position);
 
     return (
       <div id="map-id">
@@ -134,7 +78,7 @@ class LeafletMap extends React.Component {
             spiderfyDistanceMultiplier={2}
             iconCreateFunction={this.customIconCreateFunction}
           >
-            {markerList.map((marker, index) => {
+            {this.props.data.map((marker, index) => {
               let post = [marker.lat, marker.lng];
               return (
                 <Marker key={index} position={post} icon={customMarker} >
